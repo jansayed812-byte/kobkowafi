@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Brute Forcer Pro</string>
+    <string name="login_email">ایمیل</string>
+    <string name="login_password">رمزعبور</string>
+    <string name="login_button">ورود</string>
+    <string name="login_loading">درحال ورود...</string>
+    <string name="register_title">ثبت نام</string>
+    <string name="register_confirm_password">تایید رمزعبور</string>
+    <string name="register_button">ثبت نام</string>
+    <string name="register_loading">درحال ثبت نام...</string>
+    <string name="register_password_hint">حداقل 8 کاراکتر شامل حروف بزرگ، کوچک، عدد و نماد</string>
+    <string name="dashboard_title">Brute Forcer Pro</string>
+    <string name="operations_tab">عملیات</string>
+    <string name="targets_tab">اهداف</string>
+    <string name="settings_tab">تنظیمات</string>
+    <string name="create_operation">عملیات جدید</string>
+    <string name="operation_name">نام</string>
+    <string name="operation_target">هدف</string>
+    <string name="operation_type">نوع حمله</string>
+</resources>
