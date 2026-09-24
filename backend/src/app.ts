@@ -9,6 +9,7 @@ import systemRoutes from './routes/system';
 import targetsRoutes from './routes/targets';
 import wordlistsRoutes from './routes/wordlists';
 import settingsRoutes from './routes/settings';
+import notificationRoutes from './routes/notifications';
 
 const app: Express = express();
 
@@ -47,6 +48,7 @@ apiRouter.use('/operations', operationsRoutes);
 apiRouter.use('/targets', targetsRoutes);
 apiRouter.use('/wordlists', wordlistsRoutes);
 apiRouter.use('/settings', settingsRoutes);
+apiRouter.use('/notifications', notificationRoutes);
 // TODO: Mount results routes (via operations)
 // TODO: Mount logs routes (via operations)
 

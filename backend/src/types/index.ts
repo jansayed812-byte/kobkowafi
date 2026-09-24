@@ -3,8 +3,15 @@ export interface User {
   email: string;
   password_hash: string;
   api_key?: string;
+  fcmToken?: string;
   is_active: boolean;
   is_admin: boolean;
+  notifyOnCompletion?: boolean;
+  notifyOnFailure?: boolean;
+  notifyOnStart?: boolean;
+  notifyOnNewResults?: boolean;
+  notifyDailySummary?: boolean;
+  lastNotificationTime?: Date;
   created_at: Date;
   updated_at: Date;
 }
