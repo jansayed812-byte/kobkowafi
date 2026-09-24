@@ -1,4 +1,3 @@
-import admin from 'firebase-admin';
 import { User } from '../models/User';
 import { logger } from '../config/logger';
 
@@ -11,6 +10,20 @@ interface NotificationPayload {
   data?: Record<string, string>;
 }
 
+let admin: any = null;
+
+function getFirebaseAdmin() {
+  if (admin !== null) return admin;
+
+  try {
+    admin = require('firebase-admin');
+    return admin;
+  } catch (e) {
+    logger.warn('Firebase Admin SDK not available');
+    return null;
+  }
+}
+
 class NotificationService {
   private initialized: boolean = false;
 
@@ -20,21 +33,27 @@ class NotificationService {
 
   private initializeFirebase() {
     try {
-      if (!admin.apps.length) {
+      const firebaseAdmin = getFirebaseAdmin();
+      if (!firebaseAdmin) {
+        logger.warn('Firebase Admin SDK not available - notifications disabled');
+        return;
+      }
+
+      if (!firebaseAdmin.apps.length) {
         const serviceAccountPath = process.env.FIREBASE_SERVICE_ACCOUNT_PATH;
         if (!serviceAccountPath) {
           logger.warn('Firebase service account path not set - notifications disabled');
           return;
         }
 
-        admin.initializeApp({
-          credential: admin.credential.cert(serviceAccountPath)
+        firebaseAdmin.initializeApp({
+          credential: firebaseAdmin.credential.cert(serviceAccountPath)
         });
         this.initialized = true;
         logger.info('Firebase initialized for push notifications');
       }
     } catch (error) {
-      logger.error('Failed to initialize Firebase:', error);
+      logger.warn('Firebase initialization not available:', (error as Error).message);
     }
   }
 
