@@ -1,0 +1,11 @@
+/workspace/GUIDE.md
+/workspace/QUICKSTART.md
+/workspace/README.md
+/workspace/SUMMARY.md
+/workspace/TERMS_OF_USE.md
+/workspace/index.html
+/workspace/js/main.js
+/workspace/styles/components.css
+/workspace/styles/global.css
+/workspace/styles/layout.css
+/workspace/styles/variables.css

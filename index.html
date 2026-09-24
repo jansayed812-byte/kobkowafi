@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brute Forcer Pro - رابط کاربری حرفه‌ای</title>
+    <meta name="description" content="رابط کاربری حرفه‌ای و مدرن برای برنامه Brute Forcer">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles/variables.css">
+    <link rel="stylesheet" href="styles/global.css">
+    <link rel="stylesheet" href="styles/components.css">
+    <link rel="stylesheet" href="styles/layout.css">
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body data-theme="light">
+    <div class="main-layout">
+        <!-- Header -->
+        <header class="main-header">
+            <div class="header-left">
+                <a href="#" class="logo">
+                    <div class="logo-icon">⚡</div>
+                    <span>Brute Forcer Pro</span>
+                </a>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="جستجو...">
+                </div>
+            </div>
+            
+            <div class="header-right">
+                <div class="header-actions">
+                    <button class="btn btn-icon" id="notificationBtn">
+                        <div class="notification-bell">
+                            <i class="fas fa-bell"></i>
+                            <span class="notification-badge">3</span>
+                        </div>
+                    </button>
+                    
+                    <button class="btn btn-icon" id="themeToggle" title="تبدیل تم">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    
+                    <button class="btn btn-icon" id="settingsBtn">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                    
+                    <div class="profile-menu">
+                        <button class="btn btn-icon">
+                            <i class="fas fa-user"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <nav class="nav-menu">
+                <a href="#dashboard" class="nav-item active">
+                    <div class="nav-icon"><i class="fas fa-chart-line"></i></div>
+                    <span class="nav-label">داشبورد</span>
+                </a>
+                <a href="#control" class="nav-item">
+                    <div class="nav-icon"><i class="fas fa-sliders-h"></i></div>
+                    <span class="nav-label">کنترل</span>
+                </a>
+                <a href="#input" class="nav-item">
+                    <div class="nav-icon"><i class="fas fa-keyboard"></i></div>
+                    <span class="nav-label">ورودی‌ها</span>
+                </a>
+                <a href="#output" class="nav-item">
+                    <div class="nav-icon"><i class="fas fa-file-export"></i></div>
+                    <span class="nav-label">خروجی‌ها</span>
+                </a>
+                <a href="#logs" class="nav-item">
+                    <div class="nav-icon"><i class="fas fa-file-alt"></i></div>
+                    <span class="nav-label">لاگ‌ها</span>
+                </a>
+                <a href="#settings" class="nav-item">
+                    <div class="nav-icon"><i class="fas fa-gears"></i></div>
+                    <span class="nav-label">تنظیمات</span>
+                </a>
+                
+                <div style="margin-top: var(--spacing-xl); padding: 0 var(--spacing-md);">
+                    <hr style="border: none; border-top: 1px solid var(--border-light); margin: var(--spacing-lg) 0;">
+                </div>
+                
+                <a href="#help" class="nav-item">
+                    <div class="nav-icon"><i class="fas fa-question-circle"></i></div>
+                    <span class="nav-label">راهنما</span>
+                </a>
+                <a href="#about" class="nav-item">
+                    <div class="nav-icon"><i class="fas fa-info-circle"></i></div>
+                    <span class="nav-label">درباره ما</span>
+                </a>
+            </nav>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="content" id="mainContent">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="dashboard-section">
+                <h1 style="margin-bottom: var(--spacing-xl);">داشبورد</h1>
+                
+                <!-- Stats Cards -->
+                <div class="dashboard-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-label">تلاش‌های موفق</span>
+                            <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--success-color);">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value">1,234</div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>12% از هفته گذشته</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-label">تلاش‌های ناموفق</span>
+                            <div class="stat-icon" style="background: rgba(239, 68, 68, 0.1); color: var(--error-color);">
+                                <i class="fas fa-times-circle"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value">5,678</div>
+                        <div class="stat-change negative">
+                            <i class="fas fa-arrow-down"></i>
+                            <span>8% از هفته گذشته</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-label">سرعت اجرا</span>
+                            <div class="stat-icon" style="background: rgba(59, 130, 246, 0.1); color: var(--info-color);">
+                                <i class="fas fa-tachometer-alt"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value">2,450<small style="font-size: 0.5em; margin-right: 5px;">/ثانیه</small></div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>25% بهبود</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-label">وضعیت اتصال</span>
+                            <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: var(--warning-color);">
+                                <i class="fas fa-wifi"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value">متصل</div>
+                        <div class="stat-change neutral">
+                            <i class="fas fa-circle" style="font-size: 0.4em;"></i>
+                            <span>پایدار</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Charts -->
+                <div class="charts-container">
+                    <!-- Chart 1: Time Series -->
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3 class="chart-title">عملکرد در طول زمان</h3>
+                            <div class="chart-options">
+                                <button class="btn btn-sm btn-secondary">7 روز</button>
+                                <button class="btn btn-sm btn-secondary">30 روز</button>
+                            </div>
+                        </div>
+                        <div class="chart-canvas">
+                            <canvas id="performanceChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- Chart 2: Success Rate -->
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3 class="chart-title">نسبت موفقیت</h3>
+                            <button class="btn btn-icon btn-sm btn-secondary">
+                                <i class="fas fa-sync"></i>
+                            </button>
+                        </div>
+                        <div class="chart-canvas">
+                            <canvas id="successRateChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Control Panel Section -->
+            <section id="control" class="control-section" style="display: none;">
+                <h1 style="margin-bottom: var(--spacing-xl);">کنترل و مدیریت</h1>
+                
+                <div class="control-panel">
+                    <!-- Control Board -->
+                    <div class="control-card">
+                        <h3 class="control-header">کنترل اجرا</h3>
+                        <div class="control-buttons">
+                            <button class="btn btn-primary" id="startBtn">
+                                <i class="fas fa-play"></i>
+                                <span>شروع</span>
+                            </button>
+                            <button class="btn btn-warning" id="pauseBtn">
+                                <i class="fas fa-pause"></i>
+                                <span>مکث</span>
+                            </button>
+                            <button class="btn btn-danger" id="stopBtn">
+                                <i class="fas fa-stop"></i>
+                                <span>توقف</span>
+                            </button>
+                            <button class="btn btn-secondary" id="resetBtn">
+                                <i class="fas fa-redo"></i>
+                                <span>ریست</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Status Monitor -->
+                    <div class="control-card">
+                        <h3 class="control-header">وضعیت سیستم</h3>
+                        <div class="control-group">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span>استفاده از CPU</span>
+                                <span style="color: var(--primary-color); font-weight: bold;">45%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 45%;"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="control-group">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span>استفاده از حافظه</span>
+                                <span style="color: var(--warning-color); font-weight: bold;">72%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 72%; background: linear-gradient(90deg, var(--warning-color), #d97706);"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="control-group">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span>اتصال شبکه</span>
+                                <span style="color: var(--success-color); font-weight: bold;">ممتاز</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 95%; background: linear-gradient(90deg, var(--success-color), #059669);"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Input Management Section -->
+            <section id="input" class="input-section" style="display: none;">
+                <h1 style="margin-bottom: var(--spacing-xl);">مدیریت ورودی‌ها</h1>
+                
+                <div class="control-panel">
+                    <!-- Add Input -->
+                    <div class="control-card">
+                        <h3 class="control-header">افزودن ورودی جدید</h3>
+                        <div class="input-group">
+                            <label class="input-label">نوع ورودی</label>
+                            <select class="input-field">
+                                <option>نام کاربری</option>
+                                <option>ایمیل</option>
+                                <option>IP Address</option>
+                                <option>سفارشی</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">محتوای ورودی</label>
+                            <textarea class="input-field" rows="4" placeholder="ورودی‌های خود را وارد کنید..."></textarea>
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">فرمت</label>
+                            <select class="input-field">
+                                <option>.txt</option>
+                                <option>.csv</option>
+                                <option>.json</option>
+                            </select>
+                        </div>
+                        <div style="display: flex; gap: var(--spacing-md); margin-top: var(--spacing-lg);">
+                            <button class="btn btn-primary" style="flex: 1;">
+                                <i class="fas fa-upload"></i>
+                                <span>آپلود فایل</span>
+                            </button>
+                            <button class="btn btn-success" style="flex: 1;">
+                                <i class="fas fa-plus"></i>
+                                <span>افزودن</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Manage Inputs -->
+                    <div class="control-card">
+                        <h3 class="control-header">ورودی‌های موجود</h3>
+                        <div style="display: flex; flex-direction: column; gap: var(--spacing-md);">
+                            <div style="display: flex; align-items: center; justify-content: space-between; padding: var(--spacing-md); background: var(--bg-primary); border-radius: var(--radius-lg);">
+                                <div>
+                                    <div style="font-weight: bold; margin-bottom: 4px;">usernames.txt</div>
+                                    <div style="font-size: 0.9em; color: var(--text-tertiary);">1,245 ورودی</div>
+                                </div>
+                                <div style="display: flex; gap: var(--spacing-sm);">
+                                    <button class="btn btn-icon btn-sm btn-secondary" title="دانلود">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button class="btn btn-icon btn-sm btn-danger" title="حذف">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; justify-content: space-between; padding: var(--spacing-md); background: var(--bg-primary); border-radius: var(--radius-lg);">
+                                <div>
+                                    <div style="font-weight: bold; margin-bottom: 4px;">emails.csv</div>
+                                    <div style="font-size: 0.9em; color: var(--text-tertiary);">2,847 ورودی</div>
+                                </div>
+                                <div style="display: flex; gap: var(--spacing-sm);">
+                                    <button class="btn btn-icon btn-sm btn-secondary" title="دانلود">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button class="btn btn-icon btn-sm btn-danger" title="حذف">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Output Management Section -->
+            <section id="output" class="output-section" style="display: none;">
+                <h1 style="margin-bottom: var(--spacing-xl);">مدیریت خروجی‌ها</h1>
+                
+                <div class="control-panel">
+                    <!-- Output Settings -->
+                    <div class="control-card">
+                        <h3 class="control-header">تنظیمات خروجی</h3>
+                        <div class="input-group">
+                            <label class="input-label">فرمت خروجی</label>
+                            <select class="input-field">
+                                <option>.txt</option>
+                                <option>.csv</option>
+                                <option>.json</option>
+                                <option>.xlsx</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">مسیر ذخیره‌سازی</label>
+                            <input type="text" class="input-field" value="./outputs/" placeholder="مسیر پوشه‌ی خروجی">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">
+                                <input type="checkbox" checked style="margin-left: 8px;">
+                                فشرده‌سازی خروجی
+                            </label>
+                        </div>
+                        <button class="btn btn-primary" style="width: 100%; margin-top: var(--spacing-lg);">
+                            <i class="fas fa-save"></i>
+                            <span>ذخیره تنظیمات</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Output Files -->
+                    <div class="control-card">
+                        <h3 class="control-header">فایل‌های خروجی</h3>
+                        <div style="display: flex; flex-direction: column; gap: var(--spacing-md);">
+                            <div style="display: flex; align-items: center; justify-content: space-between; padding: var(--spacing-md); background: var(--bg-primary); border-radius: var(--radius-lg);">
+                                <div>
+                                    <div style="font-weight: bold; margin-bottom: 4px;">results_2024.csv</div>
+                                    <div style="font-size: 0.9em; color: var(--text-tertiary);">2.3 MB • 2024/01/15</div>
+                                </div>
+                                <div style="display: flex; gap: var(--spacing-sm);">
+                                    <button class="btn btn-icon btn-sm btn-primary" title="دانلود">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button class="btn btn-icon btn-sm btn-danger" title="حذف">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; justify-content: space-between; padding: var(--spacing-md); background: var(--bg-primary); border-radius: var(--radius-lg);">
+                                <div>
+                                    <div style="font-weight: bold; margin-bottom: 4px;">results_2024.json</div>
+                                    <div style="font-size: 0.9em; color: var(--text-tertiary);">1.8 MB • 2024/01/14</div>
+                                </div>
+                                <div style="display: flex; gap: var(--spacing-sm);">
+                                    <button class="btn btn-icon btn-sm btn-primary" title="دانلود">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button class="btn btn-icon btn-sm btn-danger" title="حذف">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Logs Section -->
+            <section id="logs" class="logs-section" style="display: none;">
+                <h1 style="margin-bottom: var(--spacing-xl);">لاگ‌های سیستم</h1>
+                
+                <div class="card" style="margin-bottom: var(--spacing-xl);">
+                    <div class="card-header">
+                        <h3>فیلترهای لاگ</h3>
+                    </div>
+                    <div class="card-body">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--spacing-md);">
+                            <div class="input-group">
+                                <label class="input-label">سطح لاگ</label>
+                                <select class="input-field">
+                                    <option>همه</option>
+                                    <option>خطا</option>
+                                    <option>هشدار</option>
+                                    <option>اطلاعات</option>
+                                    <option>موفقیت</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label class="input-label">دوره زمانی</label>
+                                <select class="input-field">
+                                    <option>امروز</option>
+                                    <option>دیروز</option>
+                                    <option>این هفته</option>
+                                    <option>این ماه</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label class="input-label">جستجو</label>
+                                <input type="text" class="input-field" placeholder="جستجو در لاگ‌ها...">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="logs-container">
+                    <div class="log-entry success">
+                        <span class="log-time">14:30:45</span>
+                        <span class="log-content">✓ عملیات موفقیت‌آمیز کامل شد - 1,234 ورودی درست‌یافت شد</span>
+                    </div>
+                    <div class="log-entry info">
+                        <span class="log-time">14:28:12</span>
+                        <span class="log-content">ℹ شروع فرآیند جدید برای فایل users.txt</span>
+                    </div>
+                    <div class="log-entry warning">
+                        <span class="log-time">14:25:33</span>
+                        <span class="log-content">⚠ سرعت اتصال کاهش یافت - 1200/ثانیه</span>
+                    </div>
+                    <div class="log-entry error">
+                        <span class="log-time">14:22:10</span>
+                        <span class="log-content">✗ خطا در اتصال به سرور - تلاش مجدد...</span>
+                    </div>
+                    <div class="log-entry success">
+                        <span class="log-time">14:20:05</span>
+                        <span class="log-content">✓ دوباره متصل شد - از سرعت عادی ادامه</span>
+                    </div>
+                    <div class="log-entry info">
+                        <span class="log-time">14:15:42</span>
+                        <span class="log-content">ℹ نرخ کوشش: 2,450 در ثانیه</span>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Settings Section -->
+            <section id="settings" class="settings-section" style="display: none;">
+                <h1 style="margin-bottom: var(--spacing-xl);">تنظیمات</h1>
+                
+                <div class="card" style="margin-bottom: var(--spacing-xl);">
+                    <div class="card-header">
+                        <h3>تنظیمات ظاهری</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="settings-grid">
+                            <div class="setting-item">
+                                <label class="input-label">تم ظاهری</label>
+                                <div style="display: flex; gap: var(--spacing-md);">
+                                    <button class="btn btn-secondary" style="flex: 1;">روشن</button>
+                                    <button class="btn btn-secondary" style="flex: 1;">تاریک</button>
+                                    <button class="btn btn-secondary" style="flex: 1;">خودکار</button>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <label class="input-label">اندازه فونت</label>
+                                <div style="display: flex; align-items: center; gap: var(--spacing-md);">
+                                    <span>A</span>
+                                    <input type="range" min="12" max="20" value="16" style="flex: 1;">
+                                    <span style="font-size: 1.5em;">A</span>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <label class="input-label">رنگ اصلی</label>
+                                <div style="display: flex; gap: var(--spacing-sm);">
+                                    <button style="width: 40px; height: 40px; background: var(--primary-color); border: 2px solid var(--primary-color); border-radius: var(--radius-lg); cursor: pointer;"></button>
+                                    <button style="width: 40px; height: 40px; background: var(--secondary-color); border: 2px solid transparent; border-radius: var(--radius-lg); cursor: pointer;"></button>
+                                    <button style="width: 40px; height: 40px; background: var(--accent-color); border: 2px solid transparent; border-radius: var(--radius-lg); cursor: pointer;"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card" style="margin-bottom: var(--spacing-xl);">
+                    <div class="card-header">
+                        <h3>تنظیمات برنامه</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="settings-grid">
+                            <div class="setting-item">
+                                <label class="input-label">حداکثر تعداد تلاش</label>
+                                <input type="number" class="input-field" value="10000" placeholder="">
+                            </div>
+                            
+                            <div class="setting-item">
+                                <label class="input-label">تأخیر بین تلاش‌ها (میلی‌ثانیه)</label>
+                                <input type="number" class="input-field" value="100" placeholder="">
+                            </div>
+                            
+                            <div class="setting-item">
+                                <label class="input-label">زمان‌انتظار اتصال (ثانیه)</label>
+                                <input type="number" class="input-field" value="30" placeholder="">
+                            </div>
+                            
+                            <div class="setting-item">
+                                <label class="input-label">تعداد تراد‌ها</label>
+                                <input type="number" class="input-field" value="4" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>سایر تنظیمات</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="control-group">
+                            <label style="display: flex; align-items: center; gap: var(--spacing-md); cursor: pointer;">
+                                <button class="toggle active"></button>
+                                <span>فعال‌سازی اطلاع‌رسانی</span>
+                            </label>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label style="display: flex; align-items: center; gap: var(--spacing-md); cursor: pointer;">
+                                <button class="toggle"></button>
+                                <span>ذخیره خودکار پروژه‌ها</span>
+                            </label>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label style="display: flex; align-items: center; gap: var(--spacing-md); cursor: pointer;">
+                                <button class="toggle active"></button>
+                                <span>پروکسی استفاده کن</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: var(--spacing-2xl); display: flex; gap: var(--spacing-md);">
+                    <button class="btn btn-primary" style="flex: 1;">
+                        <i class="fas fa-save"></i>
+                        <span>ذخیره تمام تنظیمات</span>
+                    </button>
+                    <button class="btn btn-secondary" style="flex: 1;">
+                        <i class="fas fa-undo"></i>
+                        <span>بازگشت به پیش‌فرض</span>
+                    </button>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
