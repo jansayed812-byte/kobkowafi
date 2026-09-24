@@ -2,10 +2,14 @@
    اسکریپت اصلی - Main JavaScript
    ========================================== */
 
-// ============ Theme Management ============
-
+// ============ Constants ============
 const STORAGE_KEY = 'bf-pro-theme';
 const FONT_SIZE_KEY = 'bf-pro-font-size';
+const SETTINGS_KEY = 'bf-pro-settings';
+const NOTIFICATION_DURATION = 4000;
+const CHART_UPDATE_INTERVAL = 5000;
+
+// ============ Theme Management ============
 
 class ThemeManager {
   constructor() {
@@ -283,8 +287,47 @@ class ButtonManager {
     document.getElementById('resetBtn').addEventListener('click', () => {
       if (confirm('آیا مطمئن هستید؟')) {
         this.showNotification('تمام داده‌ها ریست شدند', 'info');
+        dataLogger?.add('سیستم ریست شد', 'warning');
       }
     });
+
+    // Export settings button
+    const exportBtn = document.getElementById('exportSettingsBtn');
+    if (exportBtn) {
+      exportBtn.addEventListener('click', () => {
+        if (StorageManager.exportSettings()) {
+          this.showNotification('✓ تنظیمات صادر شد', 'success');
+          dataLogger?.add('تنظیمات صادر شدند', 'success');
+        } else {
+          this.showNotification('✗ خطا در صادر کردن', 'error');
+        }
+      });
+    }
+
+    // Import settings button
+    const importBtn = document.getElementById('importSettingsBtn');
+    const importInput = document.getElementById('importSettingsInput');
+    if (importBtn && importInput) {
+      importBtn.addEventListener('click', () => {
+        importInput.click();
+      });
+
+      importInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          StorageManager.importSettings(file)
+            .then((settings) => {
+              this.showNotification('✓ تنظیمات وارد شد', 'success');
+              dataLogger?.add('تنظیمات وارد شدند', 'success');
+              setTimeout(() => location.reload(), 1500);
+            })
+            .catch((error) => {
+              this.showNotification('✗ خطا در وارد کردن', 'error');
+              dataLogger?.add('خطا در وارد کردن: ' + error.message, 'error');
+            });
+        }
+      });
+    }
 
     // Add more event listeners as needed
   }
@@ -466,6 +509,115 @@ class StorageManager {
   static clear() {
     localStorage.clear();
   }
+
+  // Export settings as JSON file
+  static exportSettings(filename = 'bf-pro-settings.json') {
+    try {
+      const settings = {
+        theme: localStorage.getItem(STORAGE_KEY),
+        fontSize: localStorage.getItem(FONT_SIZE_KEY),
+        timestamp: new Date().toISOString(),
+        version: '1.0.0'
+      };
+      const dataStr = JSON.stringify(settings, null, 2);
+      const dataBlob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(dataBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      link.click();
+      URL.revokeObjectURL(url);
+      return true;
+    } catch (error) {
+      console.error('Export error:', error);
+      return false;
+    }
+  }
+
+  // Import settings from JSON file
+  static importSettings(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const settings = JSON.parse(e.target.result);
+          if (settings.theme) localStorage.setItem(STORAGE_KEY, settings.theme);
+          if (settings.fontSize) localStorage.setItem(FONT_SIZE_KEY, settings.fontSize);
+          resolve(settings);
+        } catch (error) {
+          reject(error);
+        }
+      };
+      reader.onerror = () => reject(reader.error);
+      reader.readAsText(file);
+    });
+  }
+}
+
+// ============ Keyboard Shortcuts Manager ============
+
+class KeyboardShortcutsManager {
+  constructor() {
+    this.shortcuts = {
+      'ctrl+s': () => this.saveSettings(),
+      'ctrl+e': () => this.exportSettings(),
+      'escape': () => this.closeModals(),
+      'ctrl+d': () => navigationManager?.navigateToSection('dashboard'),
+      'ctrl+h': () => this.showHelp(),
+    };
+    this.init();
+  }
+
+  init() {
+    document.addEventListener('keydown', (e) => {
+      const key = this.getKeyCombo(e);
+      if (this.shortcuts[key]) {
+        e.preventDefault();
+        this.shortcuts[key]();
+      }
+    });
+  }
+
+  getKeyCombo(e) {
+    const keys = [];
+    if (e.ctrlKey || e.metaKey) keys.push('ctrl');
+    if (e.shiftKey) keys.push('shift');
+    if (e.altKey) keys.push('alt');
+
+    if (e.key !== 'Control' && e.key !== 'Shift' && e.key !== 'Alt') {
+      keys.push(e.key.toLowerCase());
+    }
+
+    return keys.join('+');
+  }
+
+  saveSettings() {
+    buttonManager?.showNotification('✓ تنظیمات ذخیره شد', 'success');
+  }
+
+  exportSettings() {
+    if (StorageManager.exportSettings()) {
+      buttonManager?.showNotification('✓ تنظیمات صادر شد', 'success');
+    }
+  }
+
+  closeModals() {
+    document.querySelectorAll('.modal-overlay').forEach((modal) => {
+      modal.style.display = 'none';
+    });
+  }
+
+  showHelp() {
+    const helpText = `⌨️ میانبرهای صفحه‌کلید:
+
+Ctrl+S - ذخیره تنظیمات
+Ctrl+E - صادر کردن تنظیمات
+Ctrl+D - رفتن به داشبورد
+Ctrl+H - نمایش کمک
+ESC - بستن پنجره‌های باز`;
+
+    buttonManager?.showNotification(helpText, 'info');
+  }
 }
 
 // ============ Accessibility ============
@@ -476,19 +628,6 @@ class AccessibilityManager {
   }
 
   init() {
-    // Keyboard navigation
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        this.closeModals();
-      }
-      if (e.ctrlKey || e.metaKey) {
-        if (e.key === 's') {
-          e.preventDefault();
-          this.saveSettings();
-        }
-      }
-    });
-
     // Tab navigation
     this.setupTabNavigation();
   }
@@ -511,15 +650,86 @@ class AccessibilityManager {
       e.preventDefault();
     });
   }
+}
 
-  closeModals() {
-    document.querySelectorAll('.modal-overlay').forEach((modal) => {
-      modal.style.display = 'none';
-    });
+// ============ Search Manager ============
+
+class SearchManager {
+  constructor() {
+    this.searchBox = document.querySelector('.search-box input');
+    this.init();
   }
 
-  saveSettings() {
-    console.log('تنظیمات ذخیره شد');
+  init() {
+    if (!this.searchBox) return;
+
+    this.searchBox.addEventListener('input', Utils.debounce((e) => {
+      this.search(e.target.value);
+    }, 300));
+  }
+
+  search(query) {
+    if (!query.trim()) {
+      document.querySelectorAll('[data-searchable]').forEach((el) => {
+        el.style.display = '';
+      });
+      return;
+    }
+
+    const lowerQuery = query.toLowerCase();
+    document.querySelectorAll('[data-searchable]').forEach((el) => {
+      const text = el.textContent.toLowerCase();
+      el.style.display = text.includes(lowerQuery) ? '' : 'none';
+    });
+  }
+}
+
+// ============ Data Logger ============
+
+class DataLogger {
+  constructor() {
+    this.logs = [];
+    this.maxLogs = 1000;
+  }
+
+  add(message, level = 'info', data = null) {
+    const entry = {
+      timestamp: new Date(),
+      level,
+      message,
+      data,
+      formattedTime: this.formatTime(new Date())
+    };
+
+    this.logs.push(entry);
+    if (this.logs.length > this.maxLogs) {
+      this.logs.shift();
+    }
+
+    return entry;
+  }
+
+  formatTime(date) {
+    return date.toLocaleTimeString('fa-IR');
+  }
+
+  getLogs(level = null) {
+    return level ? this.logs.filter(l => l.level === level) : this.logs;
+  }
+
+  clear() {
+    this.logs = [];
+  }
+
+  export() {
+    const dataStr = JSON.stringify(this.logs, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `logs-${new Date().toISOString()}.json`;
+    link.click();
+    URL.revokeObjectURL(url);
   }
 }
 
@@ -533,33 +743,84 @@ let buttonManager;
 let formManager;
 let performanceMonitor;
 let accessibilityManager;
+let keyboardShortcutsManager;
+let searchManager;
+let dataLogger;
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Initialize all managers
-  themeManager = new ThemeManager();
-  navigationManager = new NavigationManager();
-  chartManager = new ChartManager();
-  buttonManager = new ButtonManager();
-  formManager = new FormManager();
-  performanceMonitor = new PerformanceMonitor();
-  accessibilityManager = new AccessibilityManager();
+  try {
+    // Initialize all managers
+    dataLogger = new DataLogger();
+    themeManager = new ThemeManager();
+    navigationManager = new NavigationManager();
+    chartManager = new ChartManager();
+    buttonManager = new ButtonManager();
+    formManager = new FormManager();
+    performanceMonitor = new PerformanceMonitor();
+    accessibilityManager = new AccessibilityManager();
+    keyboardShortcutsManager = new KeyboardShortcutsManager();
+    searchManager = new SearchManager();
 
-  console.log('✓ Brute Forcer Pro UI Initialized');
+    // Log initialization
+    dataLogger.add('تطبیق راه‌اندازی شد', 'success');
+    console.log('✓ Brute Forcer Pro UI Initialized (v2.0)');
 
-  // Update charts periodically
-  setInterval(() => {
-    chartManager.updateCharts();
-  }, 5000);
+    // Update charts periodically
+    setInterval(() => {
+      chartManager.updateCharts();
+    }, CHART_UPDATE_INTERVAL);
 
-  // Set initial active nav
-  document.querySelector('.nav-item').classList.add('active');
+    // Set initial active nav
+    const firstNav = document.querySelector('.nav-item');
+    if (firstNav) firstNav.classList.add('active');
+
+    // Show welcome notification
+    buttonManager.showNotification('خوش‌آمدید به Brute Forcer Pro!', 'success');
+  } catch (error) {
+    console.error('Initialization error:', error);
+    alert('خطا در بارگذاری برنامه');
+  }
 });
 
 // ============ Export for external use ============
 
 window.BruteForcerPro = {
+  // Utilities
   Utils,
   StorageManager,
-  showNotification: (msg, type) => buttonManager?.showNotification(msg, type),
+  DataLogger: () => dataLogger,
+
+  // UI Methods
+  showNotification: (msg, type = 'info') => buttonManager?.showNotification(msg, type),
   navigateTo: (section) => navigationManager?.navigateToSection(section),
+
+  // Theme Methods
+  setTheme: (theme) => themeManager?.setTheme(theme),
+  toggleTheme: () => themeManager?.toggleTheme(),
+  setFontSize: (size) => themeManager?.setFontSize(size),
+
+  // Settings Methods
+  exportSettings: () => {
+    if (StorageManager.exportSettings()) {
+      buttonManager?.showNotification('✓ تنظیمات صادر شد', 'success');
+    }
+  },
+
+  importSettings: (file) => {
+    StorageManager.importSettings(file).then((settings) => {
+      buttonManager?.showNotification('✓ تنظیمات وارد شد', 'success');
+      location.reload();
+    }).catch((error) => {
+      buttonManager?.showNotification('✗ خطا در وارد کردن', 'error');
+    });
+  },
+
+  // Logging Methods
+  log: (msg, level = 'info') => dataLogger?.add(msg, level),
+  getLogs: (level) => dataLogger?.getLogs(level),
+  exportLogs: () => dataLogger?.export(),
+
+  // Version Info
+  version: '2.0.0',
+  name: 'Brute Forcer Pro UI'
 };

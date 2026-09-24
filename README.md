@@ -2,7 +2,22 @@
 
 > رابط کاربری مدرن، ریسپانسیو و قابل تعامل برای برنامه Brute Forcer با قابلیت‌های پیشرفته و طراحی جدید.
 
+**نسخه**: 2.0.0 | **وضعیت**: ✅ پایدار | **آخرین به‌روزرسانی**: 2025-01-23
+
 ## ✨ ویژگی‌های اصلی
+
+### ⌨️ میانبرهای صفحه‌کلید (جدید!)
+- **Ctrl+S** - ذخیره تنظیمات
+- **Ctrl+E** - صادر تنظیمات
+- **Ctrl+D** - رفتن به داشبورد
+- **Ctrl+H** - نمایش کمک
+- **ESC** - بستن پنجره‌های باز
+
+### 💾 مدیریت تنظیمات (جدید!)
+- **صادر کردن** - تنظیمات به فایل JSON
+- **وارد کردن** - تنظیمات از فایل JSON
+- **بازگشت** - به تنظیمات پیش‌فرض
+- **ذخیره‌سازی** - خودکار در localStorage
 
 ### 🎨 طراحی حرفه‌ای
 - **Design System جامع** با متغیرهای رنگ، اندازه و فونت قابل تنظیم
@@ -61,11 +76,25 @@
 ### ♿ دسترسی‌پذیری
 - **صحیح‌سازی WCAG** برای دسترسی بیشتر
 - **Tab Navigation** کامل
-- **Keyboard Shortcuts**:
+- **Keyboard Shortcuts** (5 میانبر جدید):
   - `Escape` برای بستن مودال‌ها
   - `Ctrl+S` برای ذخیره تنظیمات
+  - `Ctrl+E` برای صادر کردن
+  - `Ctrl+D` برای داشبورد
+  - `Ctrl+H` برای کمک
 - **Screen Reader Support**
 - **Focus Management** مناسب
+
+### 📝 سیستم Logging جدید
+- **ثبت رویدادها** - تمام عملیات ثبت می‌شوند
+- **صادر لاگ‌ها** - به فایل JSON
+- **فیلتری** - بر اساس سطح (error, warning, info, success)
+- **مانیتورینگ** - بهبود دیباگینگ
+
+### 🔍 جستجو و فیلتری (جدید!)
+- **جستجوی سریع** - در تمام محتویات
+- **فیلتری خودکار** - با debounce
+- **نتایج لحظه‌ای** - بدون تاخیر
 
 ## 📁 ساختار پروژه
 
@@ -176,11 +205,11 @@ http://localhost:8000
 ### Theme Customization
 ```javascript
 // تغییر تم
-themeManager.setTheme('dark');
-themeManager.toggleTheme();
+BruteForcerPro.setTheme('dark');
+BruteForcerPro.toggleTheme();
 
 // تنظیم اندازه فونت
-themeManager.setFontSize(18);
+BruteForcerPro.setFontSize(18);
 ```
 
 ### Notifications
@@ -188,22 +217,41 @@ themeManager.setFontSize(18);
 // نمایش اطلاع
 BruteForcerPro.showNotification('پیام', 'success');
 BruteForcerPro.showNotification('خطا', 'error');
+BruteForcerPro.showNotification('هشدار', 'warning');
 ```
 
 ### Navigation
 ```javascript
 // حرکت به بخش‌های مختلف
 BruteForcerPro.navigateTo('dashboard');
-BruteForcerPro.navigateTo('control');
+BruteForcerPro.navigateTo('help');
 ```
 
-### Storage
+### Storage & Settings
 ```javascript
 // ذخیره داده
 StorageManager.save('key', data);
-
-// بازیابی داده
 const data = StorageManager.load('key');
+
+// صادر تنظیمات
+BruteForcerPro.exportSettings();
+
+// وارد تنظیمات
+BruteForcerPro.importSettings(file);
+```
+
+### Logging (جدید!)
+```javascript
+// ثبت رویداد
+BruteForcerPro.log('پیام', 'info');
+BruteForcerPro.log('خطا', 'error');
+
+// دریافت لاگ‌ها
+const logs = BruteForcerPro.getLogs('error');
+const allLogs = BruteForcerPro.getLogs();
+
+// صادر لاگ‌ها
+BruteForcerPro.exportLogs();
 ```
 
 ## 📊 نمودارها
