@@ -1,16 +1,14 @@
 package com.bruteforcer.data.notifications
 
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.bruteforcer.MainActivity
-import com.bruteforcer.R
-import com.bruteforcer.data.api.ApiClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,7 +22,6 @@ class BruteForceMessagingService : FirebaseMessagingService() {
   override fun onMessageReceived(remoteMessage: RemoteMessage) {
     Log.d(TAG, "Message received from ${remoteMessage.from}")
 
-    // Handle notification payload
     remoteMessage.notification?.let {
       Log.d(TAG, "Message Notification Body: ${it.body}")
       handleNotification(
@@ -34,8 +31,7 @@ class BruteForceMessagingService : FirebaseMessagingService() {
       )
     }
 
-    // Handle data payload
-    remoteMessage.data.isNotEmpty().let {
+    if (remoteMessage.data.isNotEmpty()) {
       Log.d(TAG, "Message data payload: ${remoteMessage.data}")
       if (remoteMessage.notification == null) {
         handleNotification(
@@ -49,7 +45,7 @@ class BruteForceMessagingService : FirebaseMessagingService() {
 
   override fun onNewToken(token: String) {
     Log.d(TAG, "Refreshed token: $token")
-    sendTokenToServer(token)
+    storeTokenLocally(token)
   }
 
   private fun handleNotification(
@@ -60,10 +56,8 @@ class BruteForceMessagingService : FirebaseMessagingService() {
     val operationId = data["operationId"]
     val status = data["status"]
 
-    // Show notification
-    showNotification(title, message, operationId, status, data)
+    showNotification(title, message, operationId, status)
 
-    // Update local database if needed
     operationId?.let {
       updateLocalDatabase(it, status, data)
     }
@@ -73,8 +67,7 @@ class BruteForceMessagingService : FirebaseMessagingService() {
     title: String,
     message: String,
     operationId: String?,
-    status: String?,
-    data: Map<String, String>
+    status: String?
   ) {
     try {
       val intent = Intent(this, MainActivity::class.java).apply {
@@ -90,24 +83,22 @@ class BruteForceMessagingService : FirebaseMessagingService() {
       )
 
       val notificationBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
-        .setSmallIcon(R.drawable.ic_notification)
+        .setSmallIcon(android.R.drawable.ic_notification_clear_all)
         .setContentTitle(title)
         .setContentText(message)
         .setAutoCancel(true)
         .setContentIntent(pendingIntent)
         .setPriority(NotificationCompat.PRIORITY_HIGH)
 
-      // Add color based on status
       val color = when (status) {
-        "completed" -> 0xFF4CAF50.toInt() // Green
-        "running" -> 0xFF2196F3.toInt()   // Blue
-        "paused" -> 0xFFFFC107.toInt()    // Amber
-        "failed" -> 0xFFF44336.toInt()    // Red
-        else -> 0xFF9C27B0.toInt()        // Purple
+        "completed" -> 0xFF4CAF50.toInt()
+        "running" -> 0xFF2196F3.toInt()
+        "paused" -> 0xFFFFC107.toInt()
+        "failed" -> 0xFFF44336.toInt()
+        else -> 0xFF9C27B0.toInt()
       }
       notificationBuilder.setColor(color)
 
-      // Add big text style for longer messages
       if (message.length > 50) {
         notificationBuilder.setStyle(
           NotificationCompat.BigTextStyle()
@@ -115,8 +106,10 @@ class BruteForceMessagingService : FirebaseMessagingService() {
         )
       }
 
-      val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-      notificationManager.notify(operationId?.hashCode() ?: 1, notificationBuilder.build())
+      NotificationManagerCompat.from(this).notify(
+        operationId?.hashCode() ?: 1,
+        notificationBuilder.build()
+      )
 
       Log.d(TAG, "Notification shown for operation: $operationId")
     } catch (e: Exception) {
@@ -131,8 +124,6 @@ class BruteForceMessagingService : FirebaseMessagingService() {
   ) {
     CoroutineScope(Dispatchers.IO).launch {
       try {
-        // This could update Room database with the latest operation status
-        // For now, we just log it
         Log.d(TAG, "Updated local database for operation: $operationId with status: $status")
       } catch (e: Exception) {
         Log.e(TAG, "Error updating local database", e)
@@ -140,17 +131,14 @@ class BruteForceMessagingService : FirebaseMessagingService() {
     }
   }
 
-  private fun sendTokenToServer(token: String) {
+  private fun storeTokenLocally(token: String) {
     CoroutineScope(Dispatchers.IO).launch {
       try {
-        val apiClient = ApiClient()
-        // Send token to backend notification subscription endpoint
-        apiClient.httpClient.post("/notifications/subscribe") {
-          setBody(mapOf("fcmToken" to token))
-        }
-        Log.d(TAG, "FCM token sent to server")
+        val prefs = getSharedPreferences("bruteforcer_prefs", Context.MODE_PRIVATE)
+        prefs.edit().putString("fcm_token", token).apply()
+        Log.d(TAG, "FCM token stored locally")
       } catch (e: Exception) {
-        Log.e(TAG, "Error sending FCM token to server", e)
+        Log.e(TAG, "Error storing FCM token", e)
       }
     }
   }

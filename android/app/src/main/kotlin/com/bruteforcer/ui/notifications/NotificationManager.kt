@@ -20,7 +20,6 @@ class NotificationManager(private val context: Context) {
   companion object {
     const val CHANNEL_ID = "bruteforcer_operations"
     const val CHANNEL_NAME = "Operation Notifications"
-    const val NOTIFICATION_SMALL_ICON = R.drawable.ic_notification
   }
 
   init {
@@ -94,7 +93,7 @@ class NotificationManager(private val context: Context) {
     )
 
     val notification = NotificationCompat.Builder(context, CHANNEL_ID)
-      .setSmallIcon(NOTIFICATION_SMALL_ICON)
+      .setSmallIcon(android.R.drawable.ic_notification_clear_all)
       .setContentTitle(title)
       .setContentText(message)
       .setAutoCancel(true)
@@ -129,7 +128,7 @@ class NotificationManager(private val context: Context) {
     progress: Int = 0
   ) {
     val notification = NotificationCompat.Builder(context, "bruteforcer_sync")
-      .setSmallIcon(NOTIFICATION_SMALL_ICON)
+      .setSmallIcon(android.R.drawable.ic_notification_clear_all)
       .setContentTitle(title)
       .setContentText(message)
       .setPriority(NotificationCompat.PRIORITY_LOW)
@@ -151,7 +150,7 @@ class NotificationManager(private val context: Context) {
     message: String
   ) {
     val notification = NotificationCompat.Builder(context, "bruteforcer_background")
-      .setSmallIcon(NOTIFICATION_SMALL_ICON)
+      .setSmallIcon(android.R.drawable.ic_notification_clear_all)
       .setContentTitle(title)
       .setContentText(message)
       .setPriority(NotificationCompat.PRIORITY_LOW)
@@ -185,18 +184,17 @@ class NotificationManager(private val context: Context) {
     }
   }
 
-  fun enableFCMTokenTracking() {
-    CoroutineScope(Dispatchers.IO).launch {
-      try {
-        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-          if (task.isSuccessful) {
-            val token = task.result
-            // Token can be used to send targeted notifications
-          }
+  fun getFCMToken(callback: (String?) -> Unit) {
+    try {
+      FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+        if (task.isSuccessful) {
+          callback(task.result)
+        } else {
+          callback(null)
         }
-      } catch (e: Exception) {
-        // Firebase not initialized
       }
+    } catch (e: Exception) {
+      callback(null)
     }
   }
 
