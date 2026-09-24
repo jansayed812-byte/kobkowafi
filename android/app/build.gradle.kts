@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.serialization")
     id("com.google.devtools.ksp") version "1.9.0-1.0.13"
+    id("com.google.gms.google-services") version "4.4.0"
 }
 
 android {
@@ -57,6 +58,13 @@ android {
 }
 
 dependencies {
+    // Firebase
+    platform("com.google.firebase:firebase-bom:32.7.0").let { platform ->
+        implementation(platform)
+    }
+    implementation("com.google.firebase:firebase-messaging")
+    implementation("com.google.firebase:firebase-analytics-ktx")
+
     // Jetpack Compose
     val composeBom = platform("androidx.compose:compose-bom:2023.09.00")
     implementation(composeBom)
@@ -101,6 +109,12 @@ dependencies {
 
     // Coil for image loading
     implementation("io.coil-kt:coil-compose:2.4.0")
+
+    // WorkManager for background tasks
+    implementation("androidx.work:work-runtime-ktx:2.8.1")
+
+    // Permissions
+    implementation("com.google.accompanist:accompanist-permissions:0.33.2-alpha")
 
     // Testing
     testImplementation("junit:junit:4.13.2")
