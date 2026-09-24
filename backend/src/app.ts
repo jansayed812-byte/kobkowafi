@@ -4,6 +4,8 @@ import cors from 'cors';
 import { config } from './config/env';
 import logger from './config/logger';
 import authRoutes from './routes/auth';
+import operationsRoutes from './routes/operations';
+import systemRoutes from './routes/system';
 
 const app: Express = express();
 
@@ -31,22 +33,18 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 // Health check endpoint
-app.get('/health', (req: Request, res: Response) => {
-  res.json({
-    status: 'ok',
-    timestamp: new Date().toISOString(),
-    uptime: process.uptime(),
-  });
-});
+app.use('/system', systemRoutes);
 
 // API prefix
 const apiRouter = express.Router();
 
 // Mount routes
 apiRouter.use('/auth', authRoutes);
-// TODO: Mount operations routes
+apiRouter.use('/operations', operationsRoutes);
 // TODO: Mount results routes
 // TODO: Mount logs routes
+// TODO: Mount targets routes
+// TODO: Mount wordlists routes
 // TODO: Mount settings routes
 
 app.use(config.api.prefix, apiRouter);
