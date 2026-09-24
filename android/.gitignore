@@ -2,6 +2,7 @@
 .gradle
 build/
 .gradle/
+gradle/wrapper/gradle-wrapper.jar
 
 # Android Studio
 .idea/
