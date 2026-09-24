@@ -6,6 +6,9 @@ import logger from './config/logger';
 import authRoutes from './routes/auth';
 import operationsRoutes from './routes/operations';
 import systemRoutes from './routes/system';
+import targetsRoutes from './routes/targets';
+import wordlistsRoutes from './routes/wordlists';
+import settingsRoutes from './routes/settings';
 
 const app: Express = express();
 
@@ -41,11 +44,11 @@ const apiRouter = express.Router();
 // Mount routes
 apiRouter.use('/auth', authRoutes);
 apiRouter.use('/operations', operationsRoutes);
-// TODO: Mount results routes
-// TODO: Mount logs routes
-// TODO: Mount targets routes
-// TODO: Mount wordlists routes
-// TODO: Mount settings routes
+apiRouter.use('/targets', targetsRoutes);
+apiRouter.use('/wordlists', wordlistsRoutes);
+apiRouter.use('/settings', settingsRoutes);
+// TODO: Mount results routes (via operations)
+// TODO: Mount logs routes (via operations)
 
 app.use(config.api.prefix, apiRouter);
 
