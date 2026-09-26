@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bruteforcer-config
+  namespace: bruteforcer
+data:
+  NODE_ENV: "production"
+  PORT: "3000"
+  API_PREFIX: "/api/v1"
+  CORS_ORIGIN: "https://bruteforcer.example.com"
+  RATE_LIMIT_WINDOW: "15"
+  RATE_LIMIT_MAX_REQUESTS: "100"

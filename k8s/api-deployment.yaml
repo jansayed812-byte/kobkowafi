@@ -1,0 +1,154 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bruteforcer-api
+  namespace: bruteforcer
+  labels:
+    app: bruteforcer-api
+    version: v1
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: bruteforcer-api
+  template:
+    metadata:
+      labels:
+        app: bruteforcer-api
+        version: v1
+    spec:
+      containers:
+      - name: api
+        image: ghcr.io/jansayed812-byte/kobkowafi/backend:latest
+        imagePullPolicy: Always
+        ports:
+        - name: http
+          containerPort: 3000
+          protocol: TCP
+        
+        env:
+        - name: NODE_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: bruteforcer-config
+              key: NODE_ENV
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:
+              name: bruteforcer-config
+              key: PORT
+        - name: DATABASE_URL
+          value: postgresql://bruteforcer:$(DB_PASSWORD)@postgres:5432/bruteforcer
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: bruteforcer-secrets
+              key: DB_PASSWORD
+        - name: REDIS_URL
+          value: redis://redis:6379
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: bruteforcer-secrets
+              key: JWT_SECRET
+        - name: JWT_REFRESH_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: bruteforcer-secrets
+              key: JWT_REFRESH_SECRET
+        
+        livenessProbe:
+          httpGet:
+            path: /system/health
+            port: http
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        
+        readinessProbe:
+          httpGet:
+            path: /system/health
+            port: http
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+        
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        
+        securityContext:
+          runAsNonRoot: true
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: false
+          capabilities:
+            drop:
+            - ALL
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bruteforcer-api
+  namespace: bruteforcer
+  labels:
+    app: bruteforcer-api
+spec:
+  type: ClusterIP
+  selector:
+    app: bruteforcer-api
+  ports:
+  - name: http
+    port: 80
+    targetPort: http
+    protocol: TCP
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: bruteforcer-api-hpa
+  namespace: bruteforcer
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: bruteforcer-api
+  minReplicas: 2
+  maxReplicas: 5
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: bruteforcer-api-pdb
+  namespace: bruteforcer
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: bruteforcer-api

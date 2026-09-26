@@ -1,359 +1,229 @@
-# 🚀 شروع سریع - Quick Start Guide
+# Brute Forcer Pro - Quick Start Guide
 
-## ⚡ 5 دقیقه - شروع کار با Brute Forcer Pro
+## System Overview
 
----
+Brute Forcer Pro is a comprehensive penetration testing platform with:
+- **Backend**: Node.js/Express API with PostgreSQL
+- **Frontend**: Web UI (HTML/CSS/JS)
+- **Mobile**: Native Android app (Kotlin)
 
-## 📥 مرحله 1: دانلود و نصب (1 دقیقه)
+## Prerequisites
 
-### فایل‌های لازم
-```
-✓ index.html
-✓ styles/ (تمام فایل‌های CSS)
-✓ js/ (تمام فایل‌های JavaScript)
-```
+### System Requirements
+- Node.js 18+ (for backend)
+- Docker & Docker Compose (for database)
+- Android Studio 2023.1+ (for Android development)
+- Git
 
-### ذخیره‌سازی
-```bash
-# تمام فایل‌ها را در یک پوشه قرار دهید
-/brute-forcer-pro/
-  ├── index.html
-  ├── styles/
-  │   ├── variables.css
-  │   ├── global.css
-  │   ├── components.css
-  │   └── layout.css
-  └── js/
-      └── main.js
-```
+### Accounts & Credentials
+- GitHub account (for code repository)
+- Email account (for testing login)
 
 ---
 
-## 🌐 مرحله 2: اجرای سرور (1 دقیقه)
+## 1️⃣ Backend Setup
 
-### گزینه 1: Python
+### 1.1 Navigate to Backend Directory
 ```bash
-cd /brute-forcer-pro
-python -m http.server 8000
+cd kobkowafi/backend
 ```
 
-### گزینه 2: Node.js
+### 1.2 Install Dependencies
 ```bash
-npx serve -s . -l 3000
+npm install
 ```
 
-### گزینه 3: PHP
+### 1.3 Configure Environment
 ```bash
-php -S localhost:8000
+cp .env.example .env
+```
+
+Edit `.env` with your configuration:
+```env
+NODE_ENV=development
+PORT=3000
+
+DATABASE_URL=postgresql://bruteforcer:password@localhost:5432/bruteforcer
+REDIS_URL=redis://localhost:6379
+
+JWT_SECRET=your_jwt_secret_here
+JWT_REFRESH_SECRET=your_refresh_secret_here
+
+CORS_ORIGIN=http://localhost:3000,http://localhost:8080
+
+RATE_LIMIT_WINDOW=15
+RATE_LIMIT_MAX_REQUESTS=100
+```
+
+### 1.4 Start Database Services
+```bash
+docker-compose up -d postgres redis
+```
+
+Verify:
+```bash
+docker-compose ps
+```
+
+### 1.5 Initialize Database
+```bash
+npm run db:init
+```
+
+### 1.6 Start Backend Server
+```bash
+npm run dev
+```
+
+Expected output:
+```
+✅ Server running on port 3000
+✅ Database connected
+✅ Redis connected
+```
+
+### 1.7 Test Backend
+```bash
+curl http://localhost:3000/system/health
+# Should return: { "success": true, "message": "System healthy" }
 ```
 
 ---
 
-## 🖥️ مرحله 3: بازدید از سایت (1 دقیقه)
+## 2️⃣ Frontend Setup
 
-### آدرس‌ها
-```
-http://localhost:8000
-http://localhost:3000
-```
-
-### چک‌کنید:
-- ✅ صفحه بارگذاری شده است
-- ✅ رابط دیده می‌شود
-- ✅ دکمه‌ها کار می‌کنند
-
----
-
-## 🎨 مرحله 4: تغییر تم (1 دقیقه)
-
-### روش 1: کلیک دکمه
-```
-دکمه ماه 🌙 در گوشه بالا راست
+### 2.1 Navigate to Frontend Directory
+```bash
+cd ../frontend
 ```
 
-### روش 2: Keyboard
-```
-درون صفحه دکمه شماره 1 بفشارید
-```
-
-### روش 3: Console
+### 2.2 Configure API Endpoint
+Edit `js/api-client.js`:
 ```javascript
-themeManager.setTheme('dark');
+const API_BASE_URL = 'http://localhost:3000/api/v1';
 ```
+
+### 2.3 Start Local Server (Optional)
+```bash
+# Using Python 3
+python -m http.server 8000
+
+# Using Node.js
+npx http-server
+```
+
+### 2.4 Open in Browser
+```
+http://localhost:8000  (or http://localhost:3000)
+```
+
+### 2.5 Test Frontend
+1. Click "حساب ندارید؟ ثبت نام کنید" (Don't have account? Sign up)
+2. Register with test credentials:
+   - Email: test@example.com
+   - Password: TestPassword123!
+3. You should be redirected to dashboard
 
 ---
 
-## 📊 مرحله 5: معرفی اصلی (1 دقیقه)
+## 3️⃣ Android App Setup
 
-### 5 بخش اساسی:
-
-#### 1️⃣ **Dashboard** - نمای کلی
-```
-Sidebar → Dashboard
+### 3.1 Open Android Project
+```bash
+cd ../android
 ```
 
-#### 2️⃣ **Control** - کنترل برنامه
-```
-Sidebar → Control
-دکمه "شروع" برای شروع
+Or open Android Studio:
+- File → Open → Select `android` folder
+
+### 3.2 Configure API Endpoint
+Edit `app/src/main/kotlin/com/bruteforcer/data/api/ApiClient.kt`:
+```kotlin
+private const val BASE_URL = "http://10.0.2.2:3000/api/v1"  // For emulator
+// private const val BASE_URL = "http://192.168.x.x:3000/api/v1"  // For device
 ```
 
-#### 3️⃣ **Input** - افزودن ورودی
-```
-Sidebar → Input Management
-فایل را آپلود کنید
-```
-
-#### 4️⃣ **Output** - تنظیم خروجی
-```
-Sidebar → Output Management
-فرمت و مسیر را تنظیم کنید
+### 3.3 Build Application
+```bash
+./gradlew build
 ```
 
-#### 5️⃣ **Logs** - دیدن لاگ‌ها
+### 3.4 Run on Emulator
+```bash
+# Create emulator (if needed)
+emulator -avd Pixel_5 -netdelay none -netspeed full
+
+# Install and run
+./gradlew installDebug
+adb shell am start -n com.bruteforcer/.MainActivity
 ```
-Sidebar → Logs
-رویدادها را بررسی کنید
-```
+
+### 3.5 Or Run on Device
+1. Connect Android device via USB
+2. Enable USB debugging
+3. Run: `./gradlew installDebug`
 
 ---
 
-## 🎯 کارهای اول
+## 4️⃣ Testing the Full System
 
-### کار 1: فهم Interface
+### 4.1 Create User Account
+Using web frontend or Android app:
 ```
-⏱️ 2 دقیقه
-✓ صفحه کامل را ببینید
-✓ تمام دکمه‌ها را کلیک کنید
-✓ Navigation را کشف کنید
-```
-
-### کار 2: تغییر تنظیمات
-```
-⏱️ 3 دقیقه
-✓ Settings بروید
-✓ اندازه فونت را تغییر دهید
-✓ رنگ را عوض کنید
-✓ تم را تبدیل کنید
+Email: test@example.com
+Password: SecurePassword123!
 ```
 
-### کار 3: آپلود فایل
-```
-⏱️ 3 دقیقه
-✓ Input Management بروید
-✓ یک فایل ساده ایجاد کنید
-✓ آپلود کنید
-✓ لیست را ببینید
-```
+### 4.2 Create Target
+1. Go to "Targets" tab
+2. Click "Add Target"
+3. Fill in:
+   - Name: Example Target
+   - Protocol: HTTP
+   - Host: example.com
+   - Port: 80
 
-### کار 4: شروع عملیات
-```
-⏱️ 2 دقیقه
-✓ Control بروید
-✓ دکمه "شروع" را فشار دهید
-✓ لاگ‌ها را ببینید
-✓ دکمه "توقف" را فشار دهید
-```
+### 4.3 Create Operation
+1. Go to "Operations" tab
+2. Click "Create Operation"
+3. Fill in:
+   - Name: Test Operation
+   - Target: Select from dropdown
+   - Attack Type: Dictionary
+
+### 4.4 Start Operation
+1. Click "Start" on operation
+2. Monitor progress
+3. View results as they come in
 
 ---
 
-## 💡 نکات سریع
+## 5️⃣ Deployment
 
-### رابط کاربری
-```
-🖱️ کلیک - فعال‌سازی تمام چیز
-🔍 جستجو - فیلتر و یافتن
-📊 نمودارها - داده‌های بصری
-🌙 تم - روشن/تاریک
+### Docker Deployment
+```bash
+docker-compose up -d
 ```
 
-### بخش‌ها
-```
-📊 Dashboard - نمای کلی ✓
-🎛️ Control - کنترل ✓
-📥 Input - ورودی ✓
-📤 Output - خروجی ✓
-📋 Logs - لاگ‌ها ✓
-⚙️ Settings - تنظیمات ✓
-```
-
-### Keyboard Shortcuts
-```
-Tab         - حرکت میان عناصر
-Escape      - بستن مودال
-Enter       - تایید
-Ctrl+S      - ذخیره
-Space       - فعال کردن
-```
+### Cloud Deployment
+See `backend/SETUP.md` for detailed cloud deployment instructions.
 
 ---
 
-## ❓ سوالات سریع
+## Support & Help
 
-### س: رابط نمایش داده نمی‌شود؟
-**جواب:**
-```
-1. صفحه را refresh کنید (F5)
-2. کنسول را باز کنید (F12)
-3. خطا‌ها را بررسی کنید
-```
+### Documentation
+- Backend: `backend/README.md` and `backend/SETUP.md`
+- Android: `android/README.md`
+- Full Implementation: `IMPLEMENTATION_SUMMARY.md`
 
-### س: دکمه‌ها کار نمی‌کنند؟
-**جواب:**
-```
-1. JavaScript فعال است؟
-2. فایل js/main.js موجود است؟
-3. صفحه را دوباره بارگذاری کنید
-```
-
-### س: نمودارها ظاهر نمی‌شوند؟
-**جواب:**
-```
-1. اتصال اینترنت را بررسی کنید
-2. Chart.js بارگذاری شده است
-3. اینترنت روشن است؟
-```
-
-### س: تم تغییر نمی‌کند؟
-**جواب:**
-```
-1. localStorage را پاک کنید
-2. صفحه را refresh کنید
-3. CSS فایل‌ها بارگذاری شده؟
-```
+### Getting Help
+- GitHub Issues: Report bugs
+- Email: jansayed812@gmail.com
+- Check logs: `docker-compose logs -f`
 
 ---
 
-## 📚 لینک‌های مفید
+**Happy Penetration Testing!** 🚀
 
-### مستندات
-```
-📖 README.md - مستندات کامل
-📖 GUIDE.md - دستور‌العمل تفصیلی
-📖 SUMMARY.md - خلاصه پروژه
-📖 TERMS_OF_USE.md - شرایط
-```
-
-### منابع
-```
-🔗 Chart.js: https://www.chartjs.org/
-🔗 Font Awesome: https://fontawesome.com/
-🔗 MDN: https://developer.mozilla.org/
-```
-
----
-
-## 🎓 مراحل بعدی
-
-### بعد از یادگیری پایه:
-
-1. **مطالعه GUIDE.md**
-   - درک عمیق‌تر
-   - نکات تفصیلی
-   - حل مشاکل
-
-2. **کاستوم‌سازی**
-   - رنگ‌ها را تغییر دهید
-   - فونت‌ها را تبدیل کنید
-   - بخش‌های جدید اضافه کنید
-
-3. **توسعه**
-   - کد را بخوانید
-   - قابلیت‌های جدید اضافه کنید
-   - ابزار‌های دیگر ادغام کنید
-
----
-
-## ✨ نکات برتری
-
-### این رابط:
-```
-✓ ساخته شده با جدیدترین تکنولوژی
-✓ طراحی حرفه‌ای و مدرن
-✓ ریسپانسیو و سریع
-✓ تمام مرورگرها را پشتیبانی می‌کند
-✓ برای تمام دستگاه‌ها کار می‌کند
-```
-
----
-
-## 🎉 شروع کنید
-
-### امروز:
-```
-1. ✅ فایل‌ها را دانلود کنید
-2. ✅ سرور را اجرا کنید
-3. ✅ صفحه را باز کنید
-4. ✅ تم را تغییر دهید
-5. ✅ بخش‌ها را کاوش کنید
-```
-
-### فردا:
-```
-1. ✅ GUIDE.md را بخوانید
-2. ✅ تنظیمات را تغییر دهید
-3. ✅ ورودی اضافه کنید
-4. ✅ عملیات را شروع کنید
-5. ✅ نتایج را بررسی کنید
-```
-
----
-
-## 📞 نیاز کمک دارید؟
-
-### بررسی‌های سریع:
-```
-☑️ تمام فایل‌ها موجود هستند؟
-☑️ سرور فعال است؟
-☑️ صفحه در مرورگر باز شده؟
-☑️ JavaScript فعال است؟
-☑️ Console خالی است؟
-```
-
-### اگر همه‌چیز خوب نبود:
-```
-📧 ایمیل ارسال کنید
-📞 تماس بگیرید
-💬 سوال پرسید
-🔍 مستندات را بخوانید
-```
-
----
-
-## 🏁 خلاصه
-
-### در 5 دقیقه:
-```
-✅ Brute Forcer Pro را نصب کردید
-✅ سرور را اجرا کردید
-✅ صفحه را باز کردید
-✅ رابط را درک کردید
-✅ آمادگی برای استفاده کامل دارید
-```
-
-### حالا:
-```
-🚀 شروع کنید و لذت ببرید!
-📚 مستندات را مطالعه کنید
-🎨 رابط را کاستوم کنید
-⚡ قابلیت‌های جدید کشف کنید
-```
-
----
-
-## 🌟 پیامی نهایی
-
-**Brute Forcer Pro** ابزار قدرتمندی است که **آسان** برای استفاده است.
-
-تنها نیاز دارید:
-- 5 دقیقه برای نصب
-- 10 دقیقه برای یادگیری
-- ∞ دقیقه برای استفاده!
-
-**خوش‌گذراندید! 🎉**
-
----
-
-**نسخه**: 1.0.0  
-**زمان**: 5 دقیقه  
-**سختی**: ⭐ ساده‌ترین
+Remember: Only perform authorized security testing on systems you own or have explicit permission to test.
