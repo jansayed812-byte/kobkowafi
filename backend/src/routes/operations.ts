@@ -1,5 +1,5 @@
 import { Router, Response } from 'express';
-import { body, query } from 'express-validator';
+import { body } from 'express-validator';
 import { authMiddleware, AuthenticatedRequest } from '../middleware/auth';
 import { handleValidationErrors } from '../middleware/validation';
 import { operationsService } from '../services/OperationsService';

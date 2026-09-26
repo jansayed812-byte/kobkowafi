@@ -119,7 +119,7 @@ export class WordlistsService {
     description?: string,
   ): Promise<Wordlist> {
     try {
-      const wordlist = await this.getWordlist(wordlistId, userId);
+      await this.getWordlist(wordlistId, userId);
 
       const updated = await wordlistModel.updateWordlist(wordlistId, {
         name,

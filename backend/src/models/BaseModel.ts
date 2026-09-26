@@ -25,7 +25,7 @@ export abstract class BaseModel {
         `SELECT * FROM ${this.tableName} LIMIT $1 OFFSET $2`,
         [limit, offset],
       );
-      return result.rows.map((row) => this.mapRow(row));
+      return result.rows.map((row: any) => this.mapRow(row));
     } catch (error) {
       logger.error(`Error finding all ${this.tableName}:`, error);
       throw error;

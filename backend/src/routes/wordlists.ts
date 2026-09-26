@@ -33,8 +33,10 @@ router.post(
       );
 
       sendSuccess(res, wordlist, 'Wordlist uploaded successfully', 201);
+      return;
     } catch (error: any) {
       sendError(res, error.message, 400);
+      return;
     }
   },
 );

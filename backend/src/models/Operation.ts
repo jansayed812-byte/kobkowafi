@@ -39,7 +39,7 @@ export class OperationModel extends BaseModel {
          LIMIT $2 OFFSET $3`,
         [userId, limit, offset],
       );
-      return result.rows.map((row) => this.mapRow(row));
+      return result.rows.map((row: any) => this.mapRow(row));
     } catch (error) {
       logger.error('Error finding operations by user:', error);
       throw error;
@@ -68,7 +68,7 @@ export class OperationModel extends BaseModel {
          LIMIT $2`,
         [status, limit],
       );
-      return result.rows.map((row) => this.mapRow(row));
+      return result.rows.map((row: any) => this.mapRow(row));
     } catch (error) {
       logger.error('Error finding operations by status:', error);
       throw error;

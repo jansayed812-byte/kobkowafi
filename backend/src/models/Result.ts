@@ -31,7 +31,7 @@ export class ResultModel extends BaseModel {
          LIMIT $2 OFFSET $3`,
         [operationId, limit, offset],
       );
-      return result.rows.map((row) => this.mapRow(row));
+      return result.rows.map((row: any) => this.mapRow(row));
     } catch (error) {
       logger.error('Error finding results by operation:', error);
       throw error;
@@ -60,7 +60,7 @@ export class ResultModel extends BaseModel {
          ORDER BY timestamp DESC`,
         [operationId],
       );
-      return result.rows.map((row) => this.mapRow(row));
+      return result.rows.map((row: any) => this.mapRow(row));
     } catch (error) {
       logger.error('Error finding successful results:', error);
       throw error;

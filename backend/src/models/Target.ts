@@ -34,7 +34,7 @@ export class TargetModel extends BaseModel {
          LIMIT $2 OFFSET $3`,
         [userId, limit, offset],
       );
-      return result.rows.map((row) => this.mapRow(row));
+      return result.rows.map((row: any) => this.mapRow(row));
     } catch (error) {
       logger.error('Error finding targets by user:', error);
       throw error;
@@ -62,7 +62,7 @@ export class TargetModel extends BaseModel {
          ORDER BY created_at DESC`,
         [userId, protocol],
       );
-      return result.rows.map((row) => this.mapRow(row));
+      return result.rows.map((row: any) => this.mapRow(row));
     } catch (error) {
       logger.error('Error finding targets by protocol:', error);
       throw error;

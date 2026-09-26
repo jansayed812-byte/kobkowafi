@@ -88,7 +88,7 @@ export class TargetsService {
     updates: Partial<CreateTargetDto>,
   ): Promise<Target> {
     try {
-      const target = await this.getTarget(targetId, userId);
+      await this.getTarget(targetId, userId);
 
       if (updates.host && !this.isValidHost(updates.host)) {
         throw new Error('Invalid host format');

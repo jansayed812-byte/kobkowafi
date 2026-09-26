@@ -1,5 +1,5 @@
-import { User } from '../models/User';
-import { logger } from '../config/logger';
+import { userModel } from '../models/User';
+import logger from '../config/logger';
 
 interface NotificationPayload {
   title: string;
@@ -67,7 +67,7 @@ class NotificationService {
         return false;
       }
 
-      const user = await User.findByPk(userId);
+      const user = await userModel.findByPk(userId);
       if (!user || !user.fcmToken) {
         logger.debug(`No FCM token for user ${userId}`);
         return false;
@@ -102,7 +102,7 @@ class NotificationService {
       logger.error(`Failed to send push notification to user ${userId}:`, error);
       // If token is invalid, clear it
       if ((error as any).code === 'messaging/invalid-registration-token') {
-        await User.update({ fcmToken: null }, { where: { id: userId } });
+        await userModel.updateWhere({ fcm_token: null }, { where: { id: userId } });
       }
       return false;
     }
@@ -117,7 +117,7 @@ class NotificationService {
         return { successCount: 0, failureCount: userIds.length };
       }
 
-      const users = await User.findAll({
+      const users = await userModel.findAllWhere({
         where: { id: userIds },
         attributes: ['id', 'fcmToken']
       });
@@ -158,12 +158,12 @@ class NotificationService {
 
       // Remove invalid tokens
       const invalidTokens = response.responses
-        .map((resp, idx) => (resp.success ? null : tokens[idx]))
-        .filter((t): t is string => t !== null);
+        .map((resp: any, idx: number) => (resp.success ? null : tokens[idx]))
+        .filter((t: any): t is string => t !== null);
 
       if (invalidTokens.length > 0) {
-        await User.update({ fcmToken: null }, {
-          where: { fcmToken: invalidTokens }
+        await userModel.updateWhere({ fcm_token: null }, {
+          where: { fcm_token: invalidTokens }
         });
       }
 
@@ -184,7 +184,7 @@ class NotificationService {
     resultCount: number,
     status: 'completed' | 'failed'
   ): Promise<boolean> {
-    const user = await User.findByPk(userId);
+    const user = await userModel.findByPk(userId);
     const shouldNotify = status === 'completed'
       ? user?.notifyOnCompletion
       : user?.notifyOnFailure;
@@ -215,7 +215,7 @@ class NotificationService {
     operationId: string,
     operationName: string
   ): Promise<boolean> {
-    const user = await User.findByPk(userId);
+    const user = await userModel.findByPk(userId);
     if (!user?.notifyOnStart) {
       return false;
     }
@@ -234,7 +234,7 @@ class NotificationService {
     operationName: string,
     resultCount: number
   ): Promise<boolean> {
-    const user = await User.findByPk(userId);
+    const user = await userModel.findByPk(userId);
     if (!user?.notifyOnNewResults) {
       return false;
     }
@@ -257,7 +257,7 @@ class NotificationService {
       failedOperations: number;
     }
   ): Promise<boolean> {
-    const user = await User.findByPk(userId);
+    const user = await userModel.findByPk(userId);
     if (!user?.notifyDailySummary) {
       return false;
     }
@@ -282,7 +282,7 @@ class NotificationService {
     preferencesConfigured: boolean;
   }> {
     try {
-      const user = await User.findByPk(userId);
+      const user = await userModel.findByPk(userId);
       if (!user) {
         return {
           fcmTokenActive: false,

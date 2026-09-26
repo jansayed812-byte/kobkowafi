@@ -103,6 +103,77 @@ export class UserModel extends BaseModel {
       throw error;
     }
   }
+
+  async findByPk(userId: string): Promise<User | null> {
+    try {
+      const result = await query(
+        'SELECT * FROM users WHERE id = $1',
+        [userId],
+      );
+      return result.rows.length > 0 ? this.mapRow(result.rows[0]) : null;
+    } catch (error) {
+      logger.error('Error finding user by ID:', error);
+      throw error;
+    }
+  }
+
+  async findAllWhere(options: { where?: Record<string, any>; attributes?: string[] }): Promise<User[]> {
+    try {
+      let sql = 'SELECT * FROM users';
+      const params: any[] = [];
+      let paramIndex = 1;
+
+      if (options.where && Object.keys(options.where).length > 0) {
+        const whereConditions = Object.entries(options.where)
+          .map(([key, value]) => {
+            if (Array.isArray(value)) {
+              const placeholders = value.map(() => `$${paramIndex++}`).join(',');
+              params.push(...value);
+              return `${key} IN (${placeholders})`;
+            }
+            params.push(value);
+            return `${key} = $${paramIndex++}`;
+          })
+          .join(' AND ');
+        sql += ` WHERE ${whereConditions}`;
+      }
+
+      const result = await query(sql, params);
+      return result.rows.map((row: any) => this.mapRow(row));
+    } catch (error) {
+      logger.error('Error finding users:', error);
+      throw error;
+    }
+  }
+
+  async updateWhere(data: Record<string, any>, options: { where: Record<string, any> }): Promise<void> {
+    try {
+      const setClauses = Object.keys(data)
+        .map((key, index) => `${key} = $${index + 1}`)
+        .join(', ');
+      const values = Object.values(data);
+      const params = [...values];
+      let paramIndex = values.length + 1;
+
+      const whereConditions = Object.entries(options.where)
+        .map(([key, value]) => {
+          if (Array.isArray(value)) {
+            const placeholders = value.map(() => `$${paramIndex++}`).join(',');
+            params.push(...value);
+            return `${key} IN (${placeholders})`;
+          }
+          params.push(value);
+          return `${key} = $${paramIndex++}`;
+        })
+        .join(' AND ');
+
+      const sql = `UPDATE users SET ${setClauses}, updated_at = CURRENT_TIMESTAMP WHERE ${whereConditions}`;
+      await query(sql, params);
+    } catch (error) {
+      logger.error('Error updating users:', error);
+      throw error;
+    }
+  }
 }
 
 export const userModel = new UserModel();

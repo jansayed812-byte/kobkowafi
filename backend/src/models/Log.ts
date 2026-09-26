@@ -31,7 +31,7 @@ export class LogModel extends BaseModel {
          LIMIT $2 OFFSET $3`,
         [operationId, limit, offset],
       );
-      return result.rows.map((row) => this.mapRow(row));
+      return result.rows.map((row: any) => this.mapRow(row));
     } catch (error) {
       logger.error('Error finding logs by operation:', error);
       throw error;
@@ -51,7 +51,7 @@ export class LogModel extends BaseModel {
          LIMIT $2 OFFSET $3`,
         [userId, limit, offset],
       );
-      return result.rows.map((row) => this.mapRow(row));
+      return result.rows.map((row: any) => this.mapRow(row));
     } catch (error) {
       logger.error('Error finding logs by user:', error);
       throw error;
@@ -71,7 +71,7 @@ export class LogModel extends BaseModel {
          LIMIT $2 OFFSET $3`,
         [level, limit, offset],
       );
-      return result.rows.map((row) => this.mapRow(row));
+      return result.rows.map((row: any) => this.mapRow(row));
     } catch (error) {
       logger.error('Error finding logs by level:', error);
       throw error;

@@ -33,7 +33,7 @@ export class WordlistModel extends BaseModel {
          LIMIT $2 OFFSET $3`,
         [userId, limit, offset],
       );
-      return result.rows.map((row) => this.mapRow(row));
+      return result.rows.map((row: any) => this.mapRow(row));
     } catch (error) {
       logger.error('Error finding wordlists by user:', error);
       throw error;

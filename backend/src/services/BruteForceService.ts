@@ -130,7 +130,6 @@ export class BruteForceService extends EventEmitter {
   }
 
   private generateMask(mask: string): string[][] {
-    const results: string[][] = [];
     const charsets: Record<string, string> = {
       '?u': 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
       '?l': 'abcdefghijklmnopqrstuvwxyz',
